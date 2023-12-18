@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import React, { useRef, useState } from "react";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
   CameraControls,
@@ -7,62 +7,179 @@ import {
   Environment,
   useHelper,
   useTexture,
+  Stats,
+  Html,
+  Text
 } from "@react-three/drei";
-import { ComputerDesk } from "./models'sJS/ComputerDesk";
-import { AlarmClock } from "./models'sJS/AlarmClock";
-import { Calendar } from "./models'sJS/Calendar";
-import { Computer } from "./models'sJS/Computer";
-import { Cupboard } from "./models'sJS/Cupboard";
-import { Microphone } from "./models'sJS/Microphone";
-import { Phone } from "./models'sJS/Phone";
-import { Trophy } from "./models'sJS/Trophy";
-import LightHelp from "./LightHelp";
 import Room from "./Room";
-import { DoubleSide, TextureLoader } from "three";
+
+import LightHelp from "./LightHelp";
+
+import TWEEN from '@tweenjs/tween.js'
+
+
+//Creating function for sommoth camera transition!
+
+//array of objects of setting up camera
+const marks = [
+  {
+    title: 'Computer Screen',
+    description: 'Alcher-related display image!',
+    camPos: {
+      x: 0.8,
+      y: 2.3,
+      z: -2,
+    },
+    lookAt: {
+      x: 1.18,
+      y: 1.85,
+      z: 0,
+    }
+
+  },
+   {
+    title: 'Cupbord',
+    description: 'Alcher merch is here!',
+    camPos: {
+      x: 5,
+      y: 4,
+      z: -2,
+    },
+    lookAt: {
+      x:5,
+      y: 3,
+      z: 0,
+    }
+
+  },
+  {
+    title: 'Clock',
+    description: 'xyz days to go for Alcheringa:)',
+    camPos: {
+      x: -1,
+      y: 2,
+      z: -2,
+    },
+    lookAt: {
+      x:-1,
+      y: 1.5,
+      z: 0,
+    }
+
+  }
+]
+
+//a component creating a button as of now!
+function Annotations({ controls }) {
+  const { camera } = useThree()
+  const [selected, setSelected] = useState(-1)
+  const [backtrack,setBackTrack]=useState(false);
+ 
+  return (
+    <React.Fragment>
+      {marks.map((a, i) => {
+        return (
+          <Html key={i} position={[a.lookAt.x, a.lookAt.y, a.lookAt.z]}>
+            <svg
+              height="34"
+              width="34"
+              transform="translate(-16 -16)"
+              style={{ cursor: 'pointer' }}>
+              <circle
+                cx="17"
+                cy="17"
+                r="16"
+                stroke="white"
+                strokeWidth="2"
+                fill="rgba(0,0,0,.66)"
+                onPointerUp={() => {
+                  setSelected(i);
+                  const isSameAnnotation=i===selected;
+                  setBackTrack(isSameAnnotation?false:true);
+                  
+                  const targetX=isSameAnnotation?0:a.lookAt.x;
+                  const targetY=isSameAnnotation?1:a.lookAt.y;
+                  const targetZ=isSameAnnotation?0:a.lookAt.z;
+
+                  const camPosX=isSameAnnotation?0:a.camPos.x;
+                  const camPosY=isSameAnnotation?3:a.camPos.y;
+                  const camPosZ=isSameAnnotation?-6:a.camPos.z;
+                  
+                  // change target
+                  {}
+                  new TWEEN.Tween(controls.current.target)
+                    .to(
+                      {
+                        x: targetX,
+                        y: targetY,
+                        z: targetZ,
+                      },
+                      1000
+                    )
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .start()
+
+                  // change camera position
+                  new TWEEN.Tween(camera.position)
+                    .to(
+                      {
+                        x: camPosX,
+                        y: camPosY,
+                        z: camPosZ,
+                      },
+                      1000
+                    )
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .start()
+                }}
+              />
+              <text
+                x="12"
+                y="22"
+                fill="white"
+                fontSize={17}
+                fontFamily="monospace"
+                style={{ pointerEvents: 'none' }}>
+                {i + 1}
+              </text>
+            </svg>
+            { 
+              
+              a.description && i === selected && backtrack  && (
+              <div
+                id={'desc_' + i}
+                className="annotationDescription"
+                dangerouslySetInnerHTML={{ __html: a.description }}
+              />
+            )}
+          </Html>
+        )
+      })}
+    </React.Fragment>
+  )
+}
+
+//Tween component to update
+function Tween() {
+  useFrame(() => {
+    TWEEN.update()
+  })
+}
+
 
 export default function App() {
+  const ref = useRef();
+
   return (
     <Canvas camera={{ fov: 70, position: [0, 3, -6] }}>
-      {/* <OrbitControls /> */}
-      <CameraControls minPolarAngle={0} maxPolarAngle={2 * Math.PI} />
+      <OrbitControls ref={ref} target={[0, 1, 0]} />
       <ambientLight intensity={0.3} />
       <LightHelp position={[0, 10, 0]} intensity={1} />
       <LightHelp position={[0, 0, -10]} intensity={2} />
-      <Environment preset="night" background blur={1} />
-      {/* <PerspectiveCamera
-        makeDefault
-        position={[0, 1.5, -0.5]}
-        near={1}
-        far={10}
-        children
-      /> */}
-      <color attach="background" args={["#191920"]} />
-      {/* <fog attach="fog" args={["#191920", 0, 15]} /> */}
-      <group scale={1}>
-        <Room />
-        <group scale={2.5} position={[1, 0.55, -0.75]}>
-          <ComputerDesk position={[0, 0, 0]} />
-          <AlarmClock position={[-0.75, 0.45, 0]} />
-          <Calendar scale={0.02} position={[0, 1, 0.48]} />
-          <Computer
-            scale={0.001}
-            position={[0, 0.4, 0]}
-            rotation={[0, Math.PI, 0]}
-          />
-          <Cupboard
-            position={[1.5, -0.34, 0.28]}
-            rotation={[0, -Math.PI, 0]}
-            scale={0.7}
-          />
-          <Microphone scale={0.02} position={[0.5, 0.4, 0]} />
-          <Phone
-            scale={0.2}
-            position={[-1, 0.5, 0]}
-            rotation={[0, -Math.PI, 0]}
-          />
-          <Trophy position={[-0.6, 0.4, 0.2]} />
-        </group>
-      </group>
+      <Room/>
+      <Annotations controls={ref} />
+      <Tween />
+      <Stats />
     </Canvas>
   );
 }

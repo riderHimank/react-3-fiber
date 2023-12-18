@@ -9,18 +9,9 @@ export function Computer(props) {
   const { nodes, materials } = useGLTF("models/Computer.gltf");
   const [clicked, setClicked] = useState(false);
   const markRef = useRef();
-  const vec_3 = new THREE.Vector3();
+  
 
-  useFrame((state, dt) => {
-    if (clicked ) {
-      state.camera.position.lerp(vec_3.set(1.47, 1.4, -30.8), 0.5);
-      state.camera.lookAt(vec_3.set(1, 1.99, -2));
-      state.camera.zoom = 40 ;
-      state.camera.updateProjectionMatrix();
-      // console.log(state.camera.position);
-    }
-    return null;
-  });
+  
 
   return (
     <group

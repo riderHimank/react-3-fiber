@@ -8,14 +8,13 @@ import { Microphone } from "./models'sJS/Microphone";
 import { Phone } from "./models'sJS/Phone";
 import { Trophy } from "./models'sJS/Trophy";
 import RoomTexture from "./RoomTexture";
-import { DoubleSide, TextureLoader } from "three";
 
 
 const Room=()=>{
     return(
-        <group scale={1}>
+        <group scale={1} >
         <RoomTexture />
-        <group scale={2.5} position={[1, 0.55, -0.75]}>
+        <group scale={2.5} position={[1, 0.55, -0.75]} >
           <ComputerDesk position={[0, 0, 0]} />
           <AlarmClock position={[-0.75, 0.45, 0]} />
           <Calendar scale={0.02} position={[0, 1, 0.48]} />

@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stats, Html, Text } from "@react-three/drei";
-import Room from "./Room";
-
 import LightHelp from "./LightHelp";
+import RoomScene_Fixing2 from "./RoomScene_Fixing2";
 
 import TWEEN from "@tweenjs/tween.js";
 
@@ -15,42 +14,70 @@ const marks = [
     title: "Computer Screen",
     description: "Alcher-related display image!",
     camPos: {
-      x: 0.8,
-      y: 2.3,
-      z: -2,
+      x: -2,
+      y: 1.3,
+      z: 0.5,
     },
     lookAt: {
-      x: 1.18,
-      y: 1.85,
+      x: -1.8,
+      y: 1.3,
+      z: 1,
+    },
+  },
+  {
+    title: "QR",
+    description: "QR code is here",
+    camPos: {
+      x: -3,
+      y: 1.5,
       z: 0,
+    },
+    lookAt: {
+      x: -3,
+      y: 1,
+      z: 1,
     },
   },
   {
     title: "Cupbord",
     description: "Alcher merch is here!",
     camPos: {
-      x: 5,
-      y: 4,
-      z: -2,
+      x: 0.5,
+      y: 1.5,
+      z: -0.2,
     },
     lookAt: {
-      x: 5,
-      y: 3,
-      z: 0,
+      x: 0,
+      y: 1.5,
+      z: 3,
     },
   },
   {
-    title: "Clock",
-    description: "xyz days to go for Alcheringa:)",
+    title: "Calendar",
+    description: "xyz days to go!",
     camPos: {
-      x: -1,
+      x: -1.3,
       y: 2,
-      z: -2,
+      z: 0.8,
     },
     lookAt: {
-      x: -1,
+      x: -1.3,
       y: 1.5,
-      z: 0,
+      z: 3,
+    },
+  },
+  {
+    title: "Trophy",
+    description: "Have a look at Kartavya",
+    camPos: {
+      x: -2.7,
+      y: 2.3,
+      z: 1,
+    },
+    lookAt: {
+      x: -2.7,
+      y: 2.5,
+      z: 3,
     },
   },
 ];
@@ -84,17 +111,15 @@ function Annotations({ controls }) {
                   const isSameAnnotation = i === selected;
                   setBackTrack(isSameAnnotation ? false : true);
 
-                  const targetX = isSameAnnotation ? 0 : a.lookAt.x;
+                  const targetX = isSameAnnotation ? -2 : a.lookAt.x;
                   const targetY = isSameAnnotation ? 1 : a.lookAt.y;
-                  const targetZ = isSameAnnotation ? 0 : a.lookAt.z;
+                  const targetZ = isSameAnnotation ? 1 : a.lookAt.z;
 
-                  const camPosX = isSameAnnotation ? 0 : a.camPos.x;
-                  const camPosY = isSameAnnotation ? 3 : a.camPos.y;
-                  const camPosZ = isSameAnnotation ? -6 : a.camPos.z;
+                  const camPosX = isSameAnnotation ? -2 : a.camPos.x;
+                  const camPosY = isSameAnnotation ? 1.5 : a.camPos.y;
+                  const camPosZ = isSameAnnotation ? -1.5 : a.camPos.z;
 
                   // change target
-                  {
-                  }
                   new TWEEN.Tween(controls.current.target)
                     .to(
                       {
@@ -119,7 +144,7 @@ function Annotations({ controls }) {
                     )
                     .easing(TWEEN.Easing.Cubic.Out)
                     .start();
-                    setSelected(backtrack?-1:i)
+                  setSelected(backtrack ? -1 : i);
                 }}
               />
               <text
@@ -160,26 +185,23 @@ export default function App() {
   return (
     <Canvas
       camera={{
-        fov: 70,
-        position: [1.5, 2, -6],
+        fov: 80,
+        position: [-2, 1.5, -2],
       }}
       shadows
     >
       <OrbitControls
         ref={ref}
-        target={[1.5, -1, 5]}
-        maxPolarAngle={Math.PI / 2 - Math.PI / 12}
-        minPolarAngle={Math.PI/2 - Math.PI/4}
-        minAzimuthAngle={Math.PI - Math.PI / 18}
-        maxAzimuthAngle={Math.PI + Math.PI / 18}
-        enableZoom={false}
+        target={[-2, 2, -1]}
+        enableZoom={true}
+        enableDamping={true}
       />
       <ambientLight intensity={0.3} castShadow />
       <LightHelp position={[0, 10, 0]} intensity={1} />
       <LightHelp position={[0, 2, -10]} intensity={0.5} />
       <LightHelp position={[15, 20, -5]} intensity={1} />
-      <Room />
-      <Annotations controls={ref} />
+      {/* <Annotations controls={ref} /> */}
+      <RoomScene_Fixing2 />
       <Tween />
       <Stats />
     </Canvas>

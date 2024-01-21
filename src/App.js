@@ -186,13 +186,13 @@ export default function App() {
     <Canvas
       camera={{
         fov: 80,
-        position: [-2, 1.5, -2],
+        position: [-2, 1.5, -1],
       }}
       shadows
     >
       <OrbitControls
         ref={ref}
-        target={[-2, 2, -1]}
+        target={[-6,1.5,-5]}
         enableZoom={true}
         enableDamping={true}
       />

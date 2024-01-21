@@ -1,8 +1,37 @@
-import React, { useRef } from "react";
-import { useGLTF } from "@react-three/drei";
+import React, { Suspense} from "react";
+import { useGLTF,useVideoTexture,useTexture } from "@react-three/drei";
+import video from "./assets/video.mp4"
+import alcher from "./assets/alcher.png"
+
+
+function VideoScene() {
+  return (
+    <mesh scale={[0.5,0.3,0.5]} position={[0, 0, 0.015]}>
+    <planeGeometry />
+      <Suspense fallback={<FallbackMaterial url={alcher}/>}>
+        <VideoMaterial url={video} />
+      </Suspense>
+    </mesh>
+  )
+}
+
+function VideoMaterial({ url }) {
+  const texture = useVideoTexture(url)
+  return <meshBasicMaterial map={texture} toneMapped={false} />
+}
+
+
+function FallbackMaterial({ url }) {
+  const texture = useTexture(url)
+  return <meshBasicMaterial map={texture} toneMapped={false} />
+}
+
+
 
 export default function RoomScene_Fixing2(props) {
   const { nodes, materials } = useGLTF("models/RoomScene_Fixing2.glb");
+
+
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -355,6 +384,7 @@ export default function RoomScene_Fixing2(props) {
           rotation={[-Math.PI / 2, 0.751, Math.PI / 2]}
           scale={1.863}
         >
+          <VideoScene/>
           <mesh
             name="Cube091"
             geometry={nodes.Cube091.geometry}

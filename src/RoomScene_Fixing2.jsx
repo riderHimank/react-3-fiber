@@ -1,14 +1,17 @@
-import React, { Suspense} from "react";
-import { useGLTF,useVideoTexture,useTexture } from "@react-three/drei";
+import React, { Suspense, useRef, useState, useEffect } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useGLTF, useVideoTexture, useTexture, Text,Text3D } from "@react-three/drei";
 import video from "./assets/video.mp4"
 import alcher from "./assets/alcher.png"
+import { useSpring } from "react-spring";
+import './App.css'
 
 
 function VideoScene() {
   return (
-    <mesh scale={[0.5,0.3,0.5]} position={[0, 0, 0.015]}>
-    <planeGeometry />
-      <Suspense fallback={<FallbackMaterial url={alcher}/>}>
+    <mesh scale={[0.5, 0.3, 0.5]} position={[0, 0, 0.015]}>
+      <planeGeometry />
+      <Suspense fallback={<FallbackMaterial url={alcher} />}>
         <VideoMaterial url={video} />
       </Suspense>
     </mesh>
@@ -28,9 +31,38 @@ function FallbackMaterial({ url }) {
 
 
 
+
+
+
 export default function RoomScene_Fixing2(props) {
   const { nodes, materials } = useGLTF("models/RoomScene_Fixing2.glb");
+  const calculateTimeRemaining = () => {
+    const currentDate = new Date();
+    const targetDate = new Date('2024-01-23'); // Replace with your target date
+    const timeDifference = targetDate.getTime() - currentDate.getTime();
 
+    // Calculate hours, minutes, and seconds remaining
+    const hoursRemaining = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutesRemaining = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsRemaining = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    return {
+      hours: hoursRemaining,
+      minutes: minutesRemaining,
+      seconds: secondsRemaining,
+    };
+  };
+
+  const clockModelRef = useRef();
+  const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeRemaining(calculateTimeRemaining());
+    }, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <group {...props} dispose={null}>
@@ -260,10 +292,25 @@ export default function RoomScene_Fixing2(props) {
           </mesh>
         </group>
         <group
+          ref={clockModelRef}
           name="Clock"
           position={[-0.178, 0.102, 1.166]}
           rotation={[0, -0.279, 0]}
         >
+          <Text
+            position={[0.19, 0.04, 0.04]}
+            fontSize={0.05}
+            color="black"
+            rotation={[0,Math.PI/2,0]}
+            anchorX="center"
+            anchorY="middle"
+            textAlign="center"
+          >
+          {`${timeRemaining.hours} : ${timeRemaining.minutes} : ${timeRemaining.seconds}
+           Remaining`}
+          
+          </Text>
+         
           <mesh
             name="Cube063"
             geometry={nodes.Cube063.geometry}
@@ -384,7 +431,7 @@ export default function RoomScene_Fixing2(props) {
           rotation={[-Math.PI / 2, 0.751, Math.PI / 2]}
           scale={1.863}
         >
-          <VideoScene/>
+          <VideoScene />
           <mesh
             name="Cube091"
             geometry={nodes.Cube091.geometry}

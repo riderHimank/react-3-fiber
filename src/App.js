@@ -4,6 +4,7 @@ import { OrbitControls, Stats, Html, Text } from "@react-three/drei";
 import LightHelp from "./LightHelp";
 import RoomScene_Fixing2 from "./RoomScene_Fixing2";
 
+
 import TWEEN from "@tweenjs/tween.js";
 
 //Creating function for sommoth camera transition!
@@ -194,14 +195,16 @@ export default function App() {
         ref={ref}
         target={[-6,1.5,-5]}
         enableZoom={true}
-        enableDamping={true}
+        enableDamping={false}
       />
       <ambientLight intensity={0.3} castShadow />
       <LightHelp position={[0, 10, 0]} intensity={1} />
       <LightHelp position={[0, 2, -10]} intensity={0.5} />
       <LightHelp position={[15, 20, -5]} intensity={1} />
+     
       {/* <Annotations controls={ref} /> */}
       <RoomScene_Fixing2 />
+      <axesHelper/>
       <Tween />
       <Stats />
     </Canvas>

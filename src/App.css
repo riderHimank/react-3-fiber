@@ -54,3 +54,8 @@ body,
   border-radius: 0.5em;
   display: block;
 }
+
+@font-face {
+  font-family: 'my-custom-font';
+  src: url('../public/clock.ttf');
+}

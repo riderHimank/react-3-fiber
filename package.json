@@ -6,6 +6,7 @@
     "@react-three/drei": "^9.91.0",
     "@react-three/fiber": "^8.15.12",
     "@tweenjs/tween.js": "^21.0.0",
+    "draco3d": "^1.5.7",
     "gltfjsx": "^6.2.16",
     "leva": "^0.9.35",
     "react": "^18.2.0",

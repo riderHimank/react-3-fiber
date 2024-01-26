@@ -1,9 +1,8 @@
 import React, { Suspense, useRef, useState, useEffect } from "react";
-import { useFrame } from "@react-three/fiber";
-import { useGLTF, useVideoTexture, useTexture, Text,Text3D } from "@react-three/drei";
+import { useGLTF, useVideoTexture, useTexture, Text } from "@react-three/drei";
 import video from "./assets/video.mp4"
 import alcher from "./assets/alcher.png"
-import { useSpring } from "react-spring";
+import * as THREE from 'three';
 import './App.css'
 
 
@@ -35,7 +34,9 @@ function FallbackMaterial({ url }) {
 
 
 export default function RoomScene_Fixing2(props) {
-  const { nodes, materials } = useGLTF("models/RoomScene_Fixing2.glb");
+  
+ 
+  const { nodes, materials } = useGLTF("models/RoomScene_Fixing2.gltf");
   const calculateTimeRemaining = () => {
     const currentDate = new Date();
     const targetDate = new Date('2024-01-23'); // Replace with your target date
@@ -1181,4 +1182,4 @@ export default function RoomScene_Fixing2(props) {
   );
 }
 
-useGLTF.preload("models/RoomScene_Fixing2.glb");
+useGLTF.preload("models/RoomScene_Fixing2.gltf");

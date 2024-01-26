@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stats, Html, Text } from "@react-three/drei";
 import LightHelp from "./LightHelp";
-import RoomScene_Fixing2 from "./RoomScene_Fixing2";
-
+//import RoomScene_Fixing2 from "./RoomScene_Fixing2";
+import { Model_Test } from "./Test";
 
 import TWEEN from "@tweenjs/tween.js";
 
@@ -197,13 +197,11 @@ export default function App() {
         enableZoom={true}
         enableDamping={false}
       />
-      <ambientLight intensity={0.3} castShadow />
-      <LightHelp position={[0, 10, 0]} intensity={1} />
-      <LightHelp position={[0, 2, -10]} intensity={0.5} />
-      <LightHelp position={[15, 20, -5]} intensity={1} />
+      <ambientLight intensity={1} castShadow />
+      
      
       {/* <Annotations controls={ref} /> */}
-      <RoomScene_Fixing2 />
+      <Model_Test/>
       <axesHelper/>
       <Tween />
       <Stats />

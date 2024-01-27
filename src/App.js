@@ -189,22 +189,20 @@ export default function App() {
       camera={{
         fov: 40,
         position: [-2, 1.5, -1],
+        zoom: 0.35,
       }}
       shadows
     >
       <OrbitControls
         ref={ref}
-        target={[-6,1.5,-5]}
+        target={[-3.5, 1.4, -2]}
         enableZoom={true}
-        enableDamping={false}
+        enableDamping={true}
+        pol
       />
-      <ambientLight intensity={4} castShadow />
-      
-     
+      <ambientLight intensity={1.5} castShadow />
       {/* <Annotations controls={ref} /> */}
-      {/* <Model_Test/> */}
       <RoomScene></RoomScene>
-      <axesHelper/>
       <Tween />
       <Stats />
     </Canvas>

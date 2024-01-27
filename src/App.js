@@ -4,6 +4,7 @@ import { OrbitControls, Stats, Html, Text } from "@react-three/drei";
 import LightHelp from "./LightHelp";
 //import RoomScene_Fixing2 from "./RoomScene_Fixing2";
 import { Model_Test } from "./Test";
+import RoomScene from "./RoomScene";
 
 import TWEEN from "@tweenjs/tween.js";
 
@@ -186,7 +187,7 @@ export default function App() {
   return (
     <Canvas
       camera={{
-        fov: 80,
+        fov: 40,
         position: [-2, 1.5, -1],
       }}
       shadows
@@ -197,11 +198,12 @@ export default function App() {
         enableZoom={true}
         enableDamping={false}
       />
-      <ambientLight intensity={1} castShadow />
+      <ambientLight intensity={4} castShadow />
       
      
       {/* <Annotations controls={ref} /> */}
-      <Model_Test/>
+      {/* <Model_Test/> */}
+      <RoomScene></RoomScene>
       <axesHelper/>
       <Tween />
       <Stats />
